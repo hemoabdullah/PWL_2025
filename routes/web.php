@@ -1,101 +1,83 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\PhotoController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
-Route::get('/hello', function () {
-    return 'Hello World';
-});
-
-//////
-
+// Basic Routes
 Route::get('/world', function () {
     return 'World';
-   });
-   
-//////
-   Route::get('/Love', function () {
-    return 'Selamat Datang Di Local Hostnya Hammam ! ';
 });
 
-/////
+Route::get('/Love', function () {
+    return 'Selamat Datang Di Local Hostnya Hammam ! ';
+});
 
 Route::get('/itsme', function () {
     return 'Hammam Abdullah Saeed B.G <br> N.A : 12 <br> Nim : 2341720203 <br> Class : TI_2i';
 });
 
-/////
+// Parameterized Routes
 Route::get('/user/{name}', function ($name) {
     return 'My name is ' . $name;
 });
-/////
 
 Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
     return 'Pos ke-' . $postId . " Komentar ke-: " . $commentId;
 });
 
-///
-
-Route::get('/user/{name?}', function ($name = null) {
-    return 'Nama saya ' . $name;
-});
-
-////
-
+// Optional Parameter Route (Only One Definition)
 Route::get('/user/{name?}', function ($name = 'Hemooz') {
     return 'Nama saya ' . $name;
 });
 
-///
-
+// Named Route
 Route::get('/user/HammamProfile', function() {
-    
+    return 'This is Hammam Profile Page';
 })->name('HammamProfile');
 
-//// - Route Group dan Route Prefixes
-
+// Middleware Grouping
 Route::middleware(['first', 'second'])->group(function () {
     Route::get('/', function () {
-        // Menggunakan middleware 'first' dan 'second'
+        return 'Home with middleware';
     });
 
     Route::get('/user/profile', function () {
-        // Menggunakan middleware 'first' dan 'second'
+        return 'User Profile with middleware';
     });
 });
 
+// Subdomain Routing
 Route::domain('{account}.example.com')->group(function () {
     Route::get('user/{id}', function ($account, $id) {
-        // Menggunakan subdomain '{account}' dan parameter '{id}'
+        return "Subdomain: $account, User ID: $id";
     });
 });
 
-/// Route Prefixes
-
+// Route Prefixes
 Route::prefix('admin')->group(function () {
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/post', [PostController::class, 'index']);
     Route::get('/event', [EventController::class, 'index']);
-    });
-    
-    // - Redirect Routes
-    Route::redirect('/here', '/there');
+});
 
-    // - View Routes
-    Route::view('/welcome', 'welcome');
-    Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+// Redirect Routes
+Route::redirect('/here', '/there');
 
-    // Controller 
+// View Routes
+Route::view('/welcome', 'welcome');
+Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
-    
+// Controller Routes
+Route::get('/', HomeController::class);
+Route::get('/about', AboutController::class);
+Route::get('/articles/{id}', ArticleController::class);
+
+// Resource Controller
+Route::resource('photos', PhotoController::class);
