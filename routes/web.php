@@ -60,13 +60,6 @@ Route::domain('{account}.example.com')->group(function () {
     });
 });
 
-// Route Prefixes
-Route::prefix('admin')->group(function () {
-    Route::get('/user', [UserController::class, 'index']);
-    Route::get('/post', [PostController::class, 'index']);
-    Route::get('/event', [EventController::class, 'index']);
-});
-
 // Redirect Routes
 Route::redirect('/here', '/there');
 
@@ -75,9 +68,16 @@ Route::view('/welcome', 'welcome');
 Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
 // Controller Routes
-Route::get('/', HomeController::class);
-Route::get('/about', AboutController::class);
-Route::get('/articles/{id}', ArticleController::class);
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/about', [AboutController::class, 'about']);
+Route::get('/articles/{id}', [ArticleController::class , 'articles']);
 
 // Resource Controller
 Route::resource('photos', PhotoController::class);
+
+
+/// view 
+
+Route::get('/greeting', function () {
+    return view('hello', ['name' => 'Hammam']); // Replace 'Andi' with any name
+});

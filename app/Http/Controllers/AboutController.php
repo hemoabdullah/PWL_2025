@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class AboutController extends Controller
 {
-    public function __invoke()
+    public function about()
     {
-        return "Tampilkan Nama dan NIM";
+        return "Hammam Abdullah Saeed B.G <br> N.A : 12 <br> Nim : 2341720203 <br> Class : TI_2i";
     }
 }
